@@ -1,3 +1,4 @@
+import org.apache.poi.hssf.extractor.ExcelExtractor;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -12,12 +13,12 @@ import java.io.InputStream;
 import java.util.Date;
 
 /**
- * Created with IDEA by penelopeWu
+ * @Author penelopeWu
  * Date:2018-03-07 19:55
  */
 public class WorkBookDemo {
     public static void main(String[] args) throws Exception {
-        demo2();
+        demo5();
 
     }
 
@@ -48,7 +49,7 @@ public class WorkBookDemo {
     /**
      * 处理时间格式的单元格
      *
-     * @throws Exception
+     * @throws Exception 异常
      */
     public static void demo2() throws Exception{
         Workbook workbook = new HSSFWorkbook();
@@ -72,7 +73,7 @@ public class WorkBookDemo {
      * 处理不同类型内容的单元格
      * <p>单元格中可以存放各种类型的数据</p>
      *
-     * @throws Exception
+     * @throws Exception 异常
      */
     public static void demo3() throws Exception {
         Workbook workbook = new HSSFWorkbook();
@@ -84,12 +85,15 @@ public class WorkBookDemo {
         row.createCell(0).setCellValue(0);
         row.createCell(1).setCellValue("1");
         row.createCell(2).setCellValue(true);
+
+        workbook.write(outputStream);
+        outputStream.close();
     }
 
     /**
      * 遍历工作薄
      *
-     * @throws Exception
+     * @throws Exception 异常
      */
     public static void demo4() throws  Exception{
         InputStream is = new FileInputStream("D:\\中奖名单");
@@ -139,7 +143,13 @@ public class WorkBookDemo {
      * @throws Exception
      */
     public static void demo5() throws  Exception{
+        InputStream is = new FileInputStream("D:\\用poi生成的工作薄.xls");
+        POIFSFileSystem fileSystem = new POIFSFileSystem(is);
+        HSSFWorkbook workbook = new HSSFWorkbook(fileSystem);
 
+        ExcelExtractor excelExtractor = new ExcelExtractor(workbook);
+        excelExtractor.setIncludeSheetNames(false);
+        System.out.println(excelExtractor.getText());
     }
 
 
